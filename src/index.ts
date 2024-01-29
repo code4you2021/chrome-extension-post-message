@@ -19,6 +19,10 @@ export const createPostMessage = <SendDataType, ResponseDataType>(
 ) => {
   const port = browserEnv.runtime.connect({ name: id });
 
+  if (browserEnv.runtime.lastError) {
+    console.log(browserEnv.runtime.lastError);
+  }
+
   const sendData = (data: SendDataType) => {
     port.postMessage(data);
   };
@@ -29,14 +33,25 @@ export const createPostMessage = <SendDataType, ResponseDataType>(
     });
   };
 
-  type DataType = {
+  const postData = (
+    sendDataCallback: (sendData: (data: SendDataType) => void) => void,
+    receiveDataCallback: (data: ResponseDataType) => void
+  ) => {
+    sendDataCallback && sendDataCallback(sendData);
+
+    port.onMessage.addListener((message: ResponseDataType) => {
+      receiveDataCallback && receiveDataCallback(message);
+    });
+  };
+
+  type InfoType = {
     data: SendDataType;
     postMessage: (data: ResponseDataType) => void;
   };
 
-  const backgroundReceiveData = (callback: (info: DataType) => void) => {
+  const backgroundReceiveData = (callback: (info: InfoType) => void) => {
     browserEnv.runtime.onConnect.addListener(function (port: PortType) {
-      port.onMessage.addListener((message: SendDataType) => {
+      port.onMessage.addListener(async (message: SendDataType) => {
         const postMessage = (data: ResponseDataType) => {
           port.postMessage(data);
         };
@@ -50,14 +65,15 @@ export const createPostMessage = <SendDataType, ResponseDataType>(
     });
   };
 
-  const disconnectPostMessage = () => {
+  const disconnectPostData = () => {
     port.disconnect();
   };
 
-  return [
+  return {
     sendData,
     receiveData,
+    postData,
     backgroundReceiveData,
-    disconnectPostMessage,
-  ] as const;
+    disconnectPostData,
+  };
 };

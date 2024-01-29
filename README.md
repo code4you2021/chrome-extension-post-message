@@ -45,7 +45,7 @@ chrome.runtime.onConnect.addListener(function (port) {
 type Data = {data:string}
 type ResponseData = {type:string,data:string}
 
-export const [sendData, receiveData, backgroundReceiveData] = createPostMessage<
+export const [sendData, receiveData, backgroundReceiveData, disconnectPostMessage] = createPostMessage<
   Data,
   ResponseData
 >("test");
@@ -57,9 +57,11 @@ receiveData((response)=>{
 })
 
 // backgrounds.js:
- backgroundReceiveData((response) => {
-    console.log("backgroundReceiveData: ", response);
+backgroundReceiveData((response) => {
+  console.log("backgroundReceiveData: ", response);
+  response.postMessage({type:"test", data:"hello, from: backgrounds.js"})
+})
 
-    response.postMessage({type:"test", data:"hello, from: backgrounds.js"})
- })
+//  If a connect() call results in multiple ports at the receiver's end, and disconnect()
+disconnectPostMessage();
 ```

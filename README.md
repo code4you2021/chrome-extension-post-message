@@ -4,6 +4,12 @@ TypeSafe browser extension messaging.
 
 Support: Chrome extension Long-lived connections.
 
+## Install
+
+```bash
+npm i chrome-extension-post-message
+```
+
 ## Message passing
 
 https://developer.chrome.com/docs/extensions/develop/concepts/messaging#connect

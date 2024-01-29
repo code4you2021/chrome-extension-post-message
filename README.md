@@ -62,6 +62,8 @@ backgroundReceiveData((response) => {
   response.postMessage({type:"test", data:"hello, from: backgrounds.js"})
 })
 
-//  If a connect() call results in multiple ports at the receiver's end, and disconnect()
+//  call results in multiple ports at the receiver's end:
+//  const port = chrome.runtime.connect({name: "test"});
+//  port.disconnect();
 disconnectPostMessage();
 ```

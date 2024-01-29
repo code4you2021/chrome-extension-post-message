@@ -36,7 +36,7 @@ export const createPostMessage = <SendDataType, ResponseDataType>(
 
   const backgroundReceiveData = (callback: (info: DataType) => void) => {
     browserEnv.runtime.onConnect.addListener(function (port: PortType) {
-      port.onMessage.addListener(async (message: SendDataType) => {
+      port.onMessage.addListener((message: SendDataType) => {
         const postMessage = (data: ResponseDataType) => {
           port.postMessage(data);
         };

@@ -1,0 +1,46 @@
+{
+  "name": "chrome-extension-post-message",
+  "description": "TypeSafe browser extension messaging.",
+  "author": "Code4You",
+  "license": "MIT",
+  "homepage": "https://github.com/code4you2021/chrome-extension-post-message",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/code4you2021/chrome-extension-post-message.git"
+  },
+  "bugs": {
+    "url": "https://github.com/code4you2021/chrome-extension-post-message/issues"
+  },
+  "keywords": [
+    "chrome",
+    "extension",
+    "messaging",
+    "typescript"
+  ],
+  "private": false,
+  "version": "0.1.0",
+  "type": "module",
+  "main": "./dist/chrome-extension-post-message.umd.cjs",
+  "module": "./dist/chrome-extension-post-message.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/chrome-extension-post-message.js",
+      "require": "./dist/chrome-extension-post-message.umd.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.10",
+    "typescript": "^5.2.2",
+    "vite": "^5.0.8",
+    "vite-plugin-dts": "^3.7.2"
+  }
+}

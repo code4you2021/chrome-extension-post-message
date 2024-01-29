@@ -18,7 +18,7 @@
     "typescript"
   ],
   "private": false,
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "module",
   "main": "./dist/chrome-extension-post-message.umd.cjs",
   "module": "./dist/chrome-extension-post-message.js",

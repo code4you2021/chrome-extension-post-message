@@ -16,9 +16,13 @@ if (typeof chrome !== "undefined") {
 
 export const createPostMessage = <SendDataType, ResponseDataType>(
   id: string,
-  isExternal: boolean = false
+  isExternal: boolean = false,
+  extensionId: string = ""
 ) => {
-  const extensionId = browserEnv.runtime.id;
+  if (isExternal && !extensionId) {
+    throw new Error("extensionId is required when isExternal is true");
+  }
+
   const port = isExternal
     ? browserEnv.runtime.connect(extensionId, { name: id })
     : browserEnv.runtime.connect({ name: id });

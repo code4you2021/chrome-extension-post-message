@@ -14,10 +14,10 @@ if (typeof chrome !== "undefined") {
   browserEnv = browser;
 }
 
-export const createPostMessage = <SendDataType, ResponseDataType>(
+const makeMessage = <SendDataType, ResponseDataType>(
   id: string,
-  isExternal: boolean = false,
-  extensionId: string = ""
+  extensionId: string = "",
+  isExternal: boolean = false
 ) => {
   if (isExternal && !extensionId) {
     throw new Error("extensionId is required when isExternal is true");
@@ -92,4 +92,17 @@ export const createPostMessage = <SendDataType, ResponseDataType>(
     backgroundReceiveData,
     disconnectPostData,
   };
+};
+
+export const createPostMessage = <SendDataType, ResponseDataType>(
+  id: string
+) => {
+  return makeMessage<SendDataType, ResponseDataType>(id);
+};
+
+export const createExternalPostMessage = <SendDataType, ResponseDataType>(
+  id: string,
+  extensionId: string
+) => {
+  return makeMessage<SendDataType, ResponseDataType>(id, extensionId, true);
 };

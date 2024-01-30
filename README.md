@@ -66,7 +66,7 @@ export const {
     postData,
     backgroundReceiveData,
     disconnectPostData
-  } = createPostMessage<Data,ResponseData>("test", true, "chrome_extension_id");
+  } = createExternalPostMessage<Data,ResponseData>("test","chrome_extension_id");
  */
 
 // content-script.js:

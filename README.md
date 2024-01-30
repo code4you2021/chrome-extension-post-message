@@ -53,6 +53,22 @@ export const {
     disconnectPostData
 } = createPostMessage<Data,ResponseData>("test");
 
+/**
+ * cross-extension messaging:
+ * https://developer.chrome.com/docs/extensions/reference/runtime#method-connect
+ *
+ * sending messages from web pages:
+ * https://developer.chrome.com/docs/extensions/reference/runtime#method-sendMessage
+ *
+ export const {
+    sendData,
+    receiveData,
+    postData,
+    backgroundReceiveData,
+    disconnectPostData
+  } = createPostMessage<Data,ResponseData>("test", true);
+ */
+
 // content-script.js:
 sendData({data:"hi, from content-script.js"})
 receiveData((response)=>{

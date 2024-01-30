@@ -15,13 +15,13 @@ if (typeof chrome !== "undefined") {
 }
 
 export const createPostMessage = <SendDataType, ResponseDataType>(
-  id: string
+  id: string,
+  isExternal: boolean = false
 ) => {
-  const port = browserEnv.runtime.connect({ name: id });
-
-  if (browserEnv.runtime.lastError) {
-    console.log(browserEnv.runtime.lastError);
-  }
+  const extensionId = browserEnv.runtime.id;
+  const port = isExternal
+    ? browserEnv.runtime.connect(extensionId, { name: id })
+    : browserEnv.runtime.connect({ name: id });
 
   const sendData = (data: SendDataType) => {
     port.postMessage(data);
@@ -50,8 +50,8 @@ export const createPostMessage = <SendDataType, ResponseDataType>(
   };
 
   const backgroundReceiveData = (callback: (info: InfoType) => void) => {
-    browserEnv.runtime.onConnect.addListener(function (port: PortType) {
-      port.onMessage.addListener(async (message: SendDataType) => {
+    const postAddListener = (port: PortType) => {
+      port.onMessage.addListener((message: SendDataType) => {
         const postMessage = (data: ResponseDataType) => {
           port.postMessage(data);
         };
@@ -62,7 +62,19 @@ export const createPostMessage = <SendDataType, ResponseDataType>(
             postMessage: postMessage,
           });
       });
-    });
+    };
+
+    if (isExternal) {
+      browserEnv.runtime.onConnectExternal.addListener(function (
+        port: PortType
+      ) {
+        postAddListener(port);
+      });
+    } else {
+      browserEnv.runtime.onConnect.addListener(function (port: PortType) {
+        postAddListener(port);
+      });
+    }
   };
 
   const disconnectPostData = () => {
